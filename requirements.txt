@@ -1,0 +1,8 @@
+pip
+flask
+flask-restplus
+Werkzeug==0.16.1
+flask-swagger-ui
+flask-swagger
+metaphone
+gunicorn==20.0.4
