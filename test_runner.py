@@ -5,6 +5,7 @@ def run_fn(fn_name, *args):
     p, m = fn_name.rsplit('.', 1)
 
     mod = import_module(p)
+
     fn = getattr(mod, m)
 
     return fn(*args)

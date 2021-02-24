@@ -21,6 +21,8 @@ name_space = app.namespace('app', description='Flaskification of Fn')
 
 logging.basicConfig(level=logging.DEBUG)
 
+fn_cache = {}
+
 @name_space.route("/fn/<modulefn>")
 class ModuleRunner(Resource):
 
@@ -37,14 +39,24 @@ class ModuleRunner(Resource):
         try:
             start_time = time.time()
 
-            p, m = modulefn.rsplit('.', 1)
-            mod = import_module(p)
+            logging.info(f" * GET ModuleRunner:: module cached: {modulefn in fn_cache}")
+            if modulefn not in fn_cache:
+                p, m = modulefn.rsplit('.', 1)
+                mod = import_module(p)
 
-            if not mod:
-                abort(404, f"no module found: {modulefn}")
+                if not mod:
+                    abort(404, f"no module found: {modulefn}")
 
-            else:
-                fn = getattr(mod, m)
+                if getattr(mod, m):
+                    fn_cache[modulefn] = getattr(mod, m)
+                    logging.info(f" * GET ModuleRunner:: cached(key: {modulefn}): {mod}")
+
+                else:
+                    abort(404, f"no funtion {m} found: {mod}")
+
+            if modulefn in fn_cache:
+
+                fn = fn_cache[modulefn]
 
                 result = fn(*runner_args)
                 logging.info(f" * GET ModuleRunner:: module.fn: {modulefn} args: {runner_args}, result: {result}")
