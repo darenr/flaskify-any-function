@@ -5,7 +5,6 @@ from __future__ import print_function
 
 from flask import Flask, request, render_template, Response
 
-from flask_swagger import swagger
 from flask_restplus import Api, Resource, fields, reqparse, abort, fields, Model
 
 import logging
