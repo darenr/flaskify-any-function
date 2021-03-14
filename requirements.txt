@@ -2,5 +2,4 @@ pip
 flask
 flask-restplus
 Werkzeug==0.16.1
-metaphone
 gunicorn==20.0.4
